@@ -82,7 +82,7 @@ export const loginUser = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
-        return res.json({success:success,user:{email:user.email,name:user.name}})
+        return res.json({success:true,user:{email:user.email,name:user.name}})
 
 
          
