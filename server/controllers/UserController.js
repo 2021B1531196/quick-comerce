@@ -95,32 +95,15 @@ export const loginUser = async (req, res) => {
 
 
 export const isAuth = async (req, res) => {
-    try {
-        // Get the token from cookies
-        const token = req.cookies.token;
-        if (!token) {
-            return res.status(401).json({ success: false, message: "Unauthorized: No token provided" });
-        }
 
-        // Verify the token
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-        
-        // Find the user based on the ID in the decoded token
-        const user = await User.findById(decodedToken.id).select("-password");
-        
-        if (!user) {
-            return res.status(404).json({ success: false, message: "User not found" });
-        }
+    try{
+        const userId = req.userId;
+        const user = await User.findById(userId).select("-password");
+        return res.json({success:true,user})
 
-        // Send the user data if the token is valid
-        return res.json({ success: true, user });
-
-    } catch (error) {
-        console.error("Error in isAuth:", error.message);
-        return res.status(500).json({ success: false, message: "Internal Server Error: " + error.message });
     }
-};
-
+    catch(error){ console.log(error.message);
+            res.json({success:false,message:error.message})}}
 //Logout User:/api/user/logout
 
 export const logoutUser = async (req, res) => {
