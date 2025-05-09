@@ -20,7 +20,7 @@ const Login = () => {
                 email,
                 password
             });
-            if (data.sucess) {
+            if (data.success) {
                 navigate('/')
                 setUser(data.user)
                 setShowUserLogin(false)
@@ -32,10 +32,10 @@ const Login = () => {
         
 
         } catch (error) {
-             toast.error(data.message)
+             toast.error(error.message)
 
         }
-        event.preventDefault();
+        
         
         
 

@@ -16,7 +16,7 @@ await connectDB()
 
 //Allowed origins
 
-const allowedOrigins = ['http://localhost:3000', 'https://your-production-url.com'];
+const allowedOrigins = ['http://localhost:5173', 'https://quick-comerce.vercel.app/'];
 
 
 //Middleware config

@@ -10,7 +10,7 @@ export const registerUser = async (req, res) => {
     try {
         // Check if user already exists
         if(!name||!email||!password){
-            return res.jsom({success:false,message:"Please fill all the fields"})}
+            return res.json({success:false,message:"Please fill all the fields"})}
 
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -36,12 +36,12 @@ export const registerUser = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
-        return res.jsom({success:false,user:{email:user.email,name:user.name}})
+        return res.json({success:false,user:{email:user.email,name:user.name}})
 
 
         } catch (error) {
             console.log(error.message);
-            res.jsom({success:false,message:error.message})
+            res.json({success:false,message:error.message})
 
             
         }  
@@ -56,7 +56,7 @@ export const loginUser = async (req, res) => {
     try {
         // Check if user exists
         if(!email||!password){
-            return res.jsom({success:false,message:"Please fill all the fields"})}
+            return res.json({success:false,message:"Please fill all the fields"})}
 
         const user = await User.findOne({ email });
         if (!user) {
@@ -82,13 +82,13 @@ export const loginUser = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
-        return res.jsom({success:false,user:{email:user.email,name:user.name}})
+        return res.json({success:false,user:{email:user.email,name:user.name}})
 
 
          
     }
     catch(error){ console.log(error.message);
-            res.jsom({success:false,message:error.message})}}
+            res.json({success:false,message:error.message})}}
 
 
 
@@ -103,7 +103,7 @@ export const isAuth = async (req, res) => {
 
     }
     catch(error){ console.log(error.message);
-            res.jsom({success:false,message:error.message})}}
+            res.json({success:false,message:error.message})}}
 
 
 //Logout User:/api/user/logout
@@ -118,7 +118,7 @@ export const logoutUser = async (req, res) => {
         return res.json({ success: true, message: "Logged out successfully" });
     } catch (error) {
         console.log(error.message);
-        res.jsom({success:false,message:error.message})
+        res.json({success:false,message:error.message})
     }
 }
 
