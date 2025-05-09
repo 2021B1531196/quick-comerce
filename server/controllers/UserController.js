@@ -1,7 +1,9 @@
-//Register User:/api/user/register
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt.js";
 import User from "../models/user.js";
+
+//Register User:/api/user/register
+
 
 export const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
@@ -46,3 +48,44 @@ export const registerUser = async (req, res) => {
 
 
 }
+
+
+//Login User:/api/user/login
+export const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        // Check if user exists
+        if(!email||!password){
+            return res.jsom({success:false,message:"Please fill all the fields"})}
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.json({ success: false, message: "Invalid credentials" })}
+
+        // Check password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.json({ success: false, message: "Invalid credentials" })}
+        
+        
+        // Send response  
+        
+        
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+            expiresIn: "7d",
+        }); 
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        });
+
+        return res.jsom({success:false,user:{email:user.email,name:user.name}})
+
+
+         
+    }
+    catch(error){ console.log(error.message);
+            res.jsom({success:false,message:error.message})}}

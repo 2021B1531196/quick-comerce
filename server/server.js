@@ -4,6 +4,8 @@ import cors from 'cors';
 
 import connectDB from './configs/db.js';
 import 'dotenv/config';
+import { use } from 'react';
+import userRouter from './routes/UserRoute.js';
 
 
 const app= express();
@@ -23,6 +25,7 @@ app.use(cookieParser());
 app.use(cors({origin:allowedOrigins, credentials:true}));
 
 app.get('/', (req, res) => res.send('Hello api is working!'));
+app.use('/api/user',userRouter); 
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
