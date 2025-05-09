@@ -1,0 +1,48 @@
+//Register User:/api/user/register
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt.js";
+import User from "../models/user.js";
+
+export const registerUser = async (req, res) => {
+    const { name, email, password } = req.body;
+    try {
+        // Check if user already exists
+        if(!name||!email||!password){
+            return res.jsom({success:false,message:"Please fill all the fields"})}
+
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ success: false, message: "User already exists" })}
+
+        // Create new user
+        const hashedPassword =await bcrypt.hash(password,10);
+
+        const user = await User.create({
+            name,
+            email,
+            password: hashedPassword,
+        });
+        // Send response    
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+            expiresIn: "7d",
+        }); 
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        });
+
+        return res.jsom({success:false,user:{email:user.email,name:user.name}})
+
+
+        } catch (error) {
+            console.log(error.message);
+            res.jsom({success:false,message:error.message})
+
+            
+        }  
+
+
+}
