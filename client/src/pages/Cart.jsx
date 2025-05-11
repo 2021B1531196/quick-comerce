@@ -66,7 +66,7 @@ const Cart = () => {
                                         <select onChange={e=>updateCartItem(product._id,Number(e.target.value))} 
                                         value={cartItems[product._id]}
                                          className='outline-none'>
-                                            {[...Array(Math.max(cartItems[product._id], 9))].map((_, index) => (
+                                            {[...Array(Math.max(cartItems[product._id]||1, 9))].map((_, index) => (
     <option key={index} value={index + 1}>{index + 1}</option>
                                             ))}
                                         </select>
